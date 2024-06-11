@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stream Video</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Stream Video</h1>
+        <video id="streamVideo" autoplay class="w-100" style="max-width: 600px;"></video>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+    <script>
+        const socket = io('http://localhost:3000');
+        const videoElement = document.getElementById('streamVideo');
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (stream) {
+                videoElement.srcObject = stream;
+
+                const options = { mimeType: 'video/webm; codecs=vp9' };
+                let mediaRecorder;
+
+                try {
+                    mediaRecorder = new MediaRecorder(stream, options);
+                } catch (e) {
+                    console.error('Exception while creating MediaRecorder:', e);
+                    return;
+                }
+
+                mediaRecorder.ondataavailable = function (event) {
+                    if (event.data && event.data.size > 0) {
+                        console.log('Data available:', event.data.size);
+                        socket.emit('videoChunk', event.data); // Send video chunk to server
+                    }
+                };
+
+                mediaRecorder.onerror = function (error) {
+                    console.error('MediaRecorder error:', error);
+                };
+
+                mediaRecorder.onstart = function () {
+                    console.log('MediaRecorder started');
+                };
+
+                mediaRecorder.onstop = function () {
+                    console.log('MediaRecorder stopped');
+                };
+
+                mediaRecorder.start(1000); // Collect 1-second video chunks
+            })
+            .catch(function (error) {
+                console.error('Error accessing media devices:', error);
+            });
+    </script>
+</body>
+</html>

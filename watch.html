@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Stream</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Watch Stream</h1>
+        <video id="liveVideo" controls autoplay class="w-100" style="max-width: 600px;"></video>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+    <script>
+        const socket = io('http://localhost:3000');
+        const videoElement = document.getElementById('liveVideo');
+        const mediaSource = new MediaSource();
+        let sourceBuffer;
+        const queue = [];
+
+        videoElement.src = URL.createObjectURL(mediaSource);
+
+        mediaSource.addEventListener('sourceopen', () => {
+            sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vp9"');
+
+            sourceBuffer.addEventListener('updateend', () => {
+                if (queue.length > 0 && !sourceBuffer.updating) {
+                    sourceBuffer.appendBuffer(queue.shift());
+                }
+            });
+
+            socket.on('stream', (data) => {
+                const buffer = new Uint8Array(data);
+                if (sourceBuffer && !sourceBuffer.updating) {
+                    try {
+                        sourceBuffer.appendBuffer(buffer);
+                    } catch (e) {
+                        console.error('Error appending buffer:', e);
+                        queue.push(buffer);
+                    }
+                } else {
+                    queue.push(buffer);
+                }
+            });
+        });
+
+        mediaSource.addEventListener('error', (e) => {
+            console.error('MediaSource error:', e);
+        });
+
+        socket.on('connect_error', (error) => {
+            console.error('Socket connect error:', error);
+        });
+
+        socket.on('disconnect', () => {
+            console.warn('Socket disconnected');
+        });
+
+        socket.on('error', (error) => {
+            console.error('Socket error:', error);
+        });
+    </script>
+</body>
+</html>
