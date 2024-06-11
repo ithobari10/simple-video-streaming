@@ -1,15 +1,30 @@
-Simple Video streaming using html, javascript and NodeJS.
+# Simple Video Streaming using HTML, JavaScript, and NodeJS
 
-First, install nodeJS dependencies : 
+## How to Use It
 
-Run in terminal: 
+### First, Install NodeJS Dependencies
+
+Run the following commands in the terminal:
+
+```sh
 npm install socket.io
 npm install express
 npm install cors
 
-then start the server
-Run in terminal : 
+
+Then, Start the Server
+Run the following command in the terminal:
 node server.js
 
-then open the project folder in browser. for example : http://localhost/simple-video/streaming
+
+Open the Project Folder in the Browser
+For example, navigate to:
+http://localhost/simple-video/streaming
+
+
+Usage
+You will see two buttons:
+
+Open Streaming Page: This page is used for streaming.
+Open Watch Page: This page is used for watching the stream.
 
