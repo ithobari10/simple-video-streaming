@@ -22,7 +22,7 @@ node server.js
 
 ### Open the Project Folder in the Browser
 For example, navigate to:
-http://localhost/simple-video/streaming
+http://localhost/simple-video/index.html
 
 
 ### Usage
