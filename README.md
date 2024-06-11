@@ -28,6 +28,6 @@ http://localhost/simple-video/streaming
 ### Usage
 You will see two buttons:
 
-Open Streaming Page: This page is used for streaming.
-Open Watch Page: This page is used for watching the stream.
+* Open Streaming Page: This page is used for streaming.
+* Open Watch Page: This page is used for watching the stream.
 
