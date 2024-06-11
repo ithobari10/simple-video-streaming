@@ -15,7 +15,9 @@ npm install cors
 
 Then, Start the Server
 Run the following command in the terminal:
+```sh
 node server.js
+```
 
 
 Open the Project Folder in the Browser
