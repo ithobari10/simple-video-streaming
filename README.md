@@ -13,19 +13,19 @@ npm install cors
 ```
 
 
-Then, Start the Server
+### Then, Start the Server
 Run the following command in the terminal:
 ```sh
 node server.js
 ```
 
 
-Open the Project Folder in the Browser
+### Open the Project Folder in the Browser
 For example, navigate to:
 http://localhost/simple-video/streaming
 
 
-Usage
+### Usage
 You will see two buttons:
 
 Open Streaming Page: This page is used for streaming.
