@@ -10,6 +10,7 @@ Run the following commands in the terminal:
 npm install socket.io
 npm install express
 npm install cors
+```
 
 
 Then, Start the Server
